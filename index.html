@@ -158,7 +158,7 @@
             </div>
         </div>
         
-        <button class="generate-btn" onclick="generateFloskel()">
+        <button class="generate-btn" onclick="generateNewFloskel()">
             Generera Floskel
         </button>
         
@@ -179,108 +179,114 @@
     </div>
 
     <script>
-        const floskler = {
-            inledning: [
-                "Maximeras med",
-                "Optimeras med",
-                "Utvecklas med",
-                "Brainstorma med",
-                "Marinera frågan tillsammans med",
-                "Vidareutvecklas med",
-                "Bromsa och gasa samtidigt tillsammans med",
-                "Ta pucken tillsammans med",
-                "Starta från scratch med",
-                "Starta projekt med",
-                "Agilitetsboosta",
-                "Håll många bollar i luften tillsammans med"
-            ],
-            vem: [
-                "dig själv",
-                "genom att",
-                "teamet",
-                "och",
-                "dina kollegor",
-                "dina kunder",
-                "en random sammansättning människor",
-                "renodla floran av insatser så vi når",
-                "stärka gruppens consensus för",
-                "samverka för",
-                "samskapa för",
-                "ett konstaterande att less är faktiskt more, mycket more.",
-                "ett sätt att höja golvet",
-                "ett ökat mervärde"
-            ],
-            hur: [
-                "pitcha",
-                "pinpointa frågeställningen",
-                "för att redan nu på torsdag",
-                "för att någon gång framöver",
-                "för att på ett konkret sätt",
-                "trimma kostnaderna och nå",
-                "stärka konkurrenskraften för",
-                "ligga i framkanten för"
-            ],
-            vad: [
-                "ett agilt arbetssätt.",
-                "ett kostnadseffektivt flöde.",
-                "ett uppnående av satta mål.",
-                "ett content that is king.",
-                "ett adekvat mervärde.",
-                "ett sätt att fylla mötesmattan.",
-                "ett maximerat ROI.",
-                "ett högt hygienfaktorvärde.",
-                "ett win-win-läge",
-                "ett koncept för tankeverksamhet utanför boxen",
-                "ett visualiseringsläge av möjligheter framför hinder"
-            ]
-        };
+        // Data för floskelgeneratorn
+        var inledning = [
+            "Maximeras med",
+            "Optimeras med", 
+            "Utvecklas med",
+            "Brainstorma med",
+            "Marinera frågan tillsammans med",
+            "Vidareutvecklas med",
+            "Bromsa och gasa samtidigt tillsammans med",
+            "Ta pucken tillsammans med",
+            "Starta från scratch med",
+            "Accelerera processen med",
+            "Benchmarka tillsammans med",
+            "Disruptera branschen tillsammans med"
+        ];
 
-        let generatedCount = 0;
+        var vem = [
+            "dig själv",
+            "teamet",
+            "dina kollegor", 
+            "dina kunder",
+            "stakeholders",
+            "projektgruppen",
+            "våra partners",
+            "cross-funktionella team",
+            "ledningsgruppen",
+            "användarbasen",
+            "externa konsulter",
+            "innovation-hubben"
+        ];
 
-        function getRandomElement(array) {
-            return array[Math.floor(Math.random() * array.length)];
+        var hur = [
+            "genom att pitcha",
+            "för att pinpointa",
+            "för att redan nu trimma kostnaderna och nå",
+            "för att stärka konkurrenskraften för", 
+            "genom att deep-diva i",
+            "för att pivota mot",
+            "genom att streamlina processer för",
+            "för att crowdsourca insikter kring",
+            "genom att customiza lösningen för"
+        ];
+
+        var vad = [
+            "ett agilt arbetssätt",
+            "ett kostnadseffektivt flöde",
+            "ett uppnående av satta mål",
+            "ett adekvat mervärde",
+            "ett maximerat ROI",
+            "ett win-win-läge",
+            "en skalbar affärsmodell",
+            "en data-driven beslutsprocess",
+            "en digital transformation",
+            "en end-to-end-lösning"
+        ];
+
+        var slutklam = [
+            "som verkligen levererar resultat.",
+            "med fokus på hållbar tillväxt.",
+            "för framtidens arbetsplats.",
+            "som skapar riktigt wow-effekt.",
+            "med tydlig bottom line-impact.",
+            "som revolutionerar branschen.",
+            "med genuine business impact.",
+            "som sätter ribban högt.",
+            "med cutting edge-innovation.",
+            "som enabler success."
+        ];
+
+        var generatedCount = 0;
+
+        function getRandomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        function generateFloskel() {
-            const inledning = getRandomElement(floskler.inledning);
-            const vem = getRandomElement(floskler.vem);
-            const hur = getRandomElement(floskler.hur);
-            const vad = getRandomElement(floskler.vad);
-            const slutklam = getRandomElement(floskler.slutklam);
+        function generateNewFloskel() {
+            var i = getRandomFromArray(inledning);
+            var v = getRandomFromArray(vem);
+            var h = getRandomFromArray(hur);
+            var va = getRandomFromArray(vad);
+            var s = getRandomFromArray(slutklam);
 
-            let floskel = `${inledning} ${vem} ${hur} ${vad} ${slutklam}`;
+            var floskel = i + " " + v + " " + h + " " + va + " " + s;
             
-            // Clean up the text a bit
-            floskel = floskel.replace(/\s+/g, ' ').trim();
-            
-            document.getElementById('floskelText').textContent = floskel;
+            document.getElementById('floskelText').innerHTML = floskel;
             
             generatedCount++;
-            document.getElementById('generatedCount').textContent = generatedCount;
+            document.getElementById('generatedCount').innerHTML = generatedCount;
         }
 
-        function calculateTotalCombinations() {
-            const total = floskler.inledning.length * 
-                         floskler.vem.length * 
-                         floskler.hur.length * 
-                         floskler.vad.length *
-                         floskler.slutklam.length;
-            document.getElementById('totalCombinations').textContent = total.toLocaleString('sv-SE');
+        function calculateCombinations() {
+            var total = inledning.length * vem.length * hur.length * vad.length * slutklam.length;
+            document.getElementById('totalCombinations').innerHTML = total.toLocaleString('sv-SE');
         }
 
-        // Initialize
-        calculateTotalCombinations();
-        
-        // Add keyboard shortcut
+        // Kör när sidan laddas
+        window.onload = function() {
+            calculateCombinations();
+            generateNewFloskel();
+        };
+
+        // Tangentbordsgenväg - mellanslag
         document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space' && !event.target.matches('input, textarea')) {
+            if (event.code === 'Space' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
                 event.preventDefault();
-                generateFloskel();
+                generateNewFloskel();
             }
         });
-        
-        // Generate initial floskel
-        generateFloskel();
     </script>
 </body>
 </html>
