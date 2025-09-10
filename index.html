@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svensk Floskelgenerator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        
+        .floskel-display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .floskel-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .generate-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .floskel-text {
+                font-size: 1.1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Floskelgenerator</h1>
+        <p class="subtitle">Generera professionella floskler för alla tillfällen</p>
+        
+        <div class="floskel-display">
+            <div class="floskel-text" id="floskelText">
+                Klicka på knappen för att generera en floskel!
+            </div>
+        </div>
+        
+        <button class="generate-btn" onclick="generateFloskel()">
+            Generera Floskel
+        </button>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="totalCombinations">0</div>
+                <div class="stat-label">Möjliga kombinationer</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="generatedCount">0</div>
+                <div class="stat-label">Genererade floskler</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            En generator för moderna arbetsplatser 💼
+        </div>
+    </div>
+
+    <script>
+        const floskler = {
+            inledning: [
+                "Maximeras med",
+                "Optimeras med",
+                "Utvecklas med",
+                "Brainstorma med",
+                "Marinera frågan tillsammans med",
+                "Vidareutvecklas med",
+                "Bromsa och gasa samtidigt tillsammans med",
+                "Ta pucken tillsammans med",
+                "Starta från scratch med",
+                "Starta projekt med",
+                "Agilitetsboosta",
+                "Håll många bollar i luften tillsammans med"
+            ],
+            vem: [
+                "dig själv",
+                "genom att",
+                "teamet",
+                "och",
+                "dina kollegor",
+                "dina kunder",
+                "en random sammansättning människor",
+                "renodla floran av insatser så vi når",
+                "stärka gruppens consensus för",
+                "samverka för",
+                "samskapa för",
+                "ett konstaterande att less är faktiskt more, mycket more.",
+                "ett sätt att höja golvet",
+                "ett ökat mervärde"
+            ],
+            hur: [
+                "pitcha",
+                "pinpointa frågeställningen",
+                "för att redan nu på torsdag",
+                "för att någon gång framöver",
+                "för att på ett konkret sätt",
+                "trimma kostnaderna och nå",
+                "stärka konkurrenskraften för",
+                "ligga i framkanten för"
+            ],
+            vad: [
+                "ett agilt arbetssätt.",
+                "ett kostnadseffektivt flöde.",
+                "ett uppnående av satta mål.",
+                "ett content that is king.",
+                "ett adekvat mervärde.",
+                "ett sätt att fylla mötesmattan.",
+                "ett maximerat ROI.",
+                "ett högt hygienfaktorvärde.",
+                "ett win-win-läge",
+                "ett koncept för tankeverksamhet utanför boxen",
+                "ett visualiseringsläge av möjligheter framför hinder"
+            ]
+        };
+
+        let generatedCount = 0;
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generateFloskel() {
+            const inledning = getRandomElement(floskler.inledning);
+            const vem = getRandomElement(floskler.vem);
+            const hur = getRandomElement(floskler.hur);
+            const vad = getRandomElement(floskler.vad);
+            const slutklam = getRandomElement(floskler.slutklam);
+
+            let floskel = `${inledning} ${vem} ${hur} ${vad} ${slutklam}`;
+            
+            // Clean up the text a bit
+            floskel = floskel.replace(/\s+/g, ' ').trim();
+            
+            document.getElementById('floskelText').textContent = floskel;
+            
+            generatedCount++;
+            document.getElementById('generatedCount').textContent = generatedCount;
+        }
+
+        function calculateTotalCombinations() {
+            const total = floskler.inledning.length * 
+                         floskler.vem.length * 
+                         floskler.hur.length * 
+                         floskler.vad.length *
+                         floskler.slutklam.length;
+            document.getElementById('totalCombinations').textContent = total.toLocaleString('sv-SE');
+        }
+
+        // Initialize
+        calculateTotalCombinations();
+        
+        // Add keyboard shortcut
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && !event.target.matches('input, textarea')) {
+                event.preventDefault();
+                generateFloskel();
+            }
+        });
+        
+        // Generate initial floskel
+        generateFloskel();
+    </script>
+</body>
+</html>
