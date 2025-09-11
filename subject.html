@@ -25,7 +25,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             padding: 40px;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             backdrop-filter: blur(10px);
         }
@@ -48,6 +48,92 @@
             font-style: italic;
         }
         
+        /* Topic Selection Styles */
+        .topic-selection {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .topic-selection h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+        
+        .checkbox-item span {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input[type="checkbox"]:checked + span {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        /* Floskel Display */
         .floskel-display {
             background: #f8f9fa;
             border-radius: 15px;
@@ -144,6 +230,10 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -152,9 +242,44 @@
         <h1>🎲 Floskelgenerator</h1>
         <p class="subtitle">Generera professionella floskler för alla tillfällen</p>
         
+        <!-- Topic Selection Section -->
+        <div class="topic-selection">
+            <h3>Välj ämnen för floskler:</h3>
+            <div class="checkbox-grid">
+                <label class="checkbox-item">
+                    <input type="checkbox" id="allmant" checked>
+                    <span>📋 Allmänt</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" id="ekonomi">
+                    <span>💰 Ekonomi & Budget</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" id="ledarskap">
+                    <span>👑 Ledarskap & Chefsskap</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" id="moten">
+                    <span>🤝 Möten & Workshops</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" id="hr">
+                    <span>👥 HR & Personal</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" id="it">
+                    <span>💻 IT & Digital</span>
+                </label>
+            </div>
+            <div class="control-buttons">
+                <button type="button" class="control-btn" onclick="selectAll()">Välj alla</button>
+                <button type="button" class="control-btn" onclick="clearAll()">Rensa alla</button>
+            </div>
+        </div>
+
         <div class="floskel-display">
             <div class="floskel-text" id="floskelText">
-                Klicka på knappen för att generera en floskel!
+                Välj ämnen ovan och klicka på knappen för att generera en floskel!
             </div>
         </div>
         
@@ -218,7 +343,7 @@
                 ],
                 hur: [
                     "genom att cost-cutt:a för", "för att budget-planera mot", "genom att forecasta fram",
-                    "för att streamlina spend:en för", "genom att rightsiza:a för", "för att capitalize på"
+                    "för att streamlina spend:en för", "genom att rightsizes:a för", "för att capitalize på"
                 ],
                 vad: [
                     "en cost-effective roadmap", "ett streamlinat spend-management", "en profitabilitetsstrategi",
@@ -231,7 +356,7 @@
             },
             ledarskap: {
                 inledning: [
-                    "Empowera teamet genom", "Vishionera tillsammans med", "Coacha medarbetarna för", "Inspirera organisationen med",
+                    "Empowera teamet genom", "Visionera tillsammans med", "Coacha medarbetarna för", "Inspirera organisationen med",
                     "Transformera kulturen genom", "Facilitera förändring med", "Utveckla talanger genom", "Motivera individer med"
                 ],
                 vem: [
@@ -239,7 +364,7 @@
                     "change agents", "culture carriers", "senior managern", "middle managern"
                 ],
                 hur: [
-                    "genom att enablea för", "för att coaching:a fram", "genom att mentora mot",
+                    "genom att enablea för", "för att coach:a fram", "genom att mentora mot",
                     "för att utveckla förmågan att", "genom att empowera för", "för att inspirera till"
                 ],
                 vad: [
@@ -262,7 +387,7 @@
                 ],
                 hur: [
                     "genom att strukturera agendan för", "för att facilitera diskussion kring", "genom att moderera fram",
-                    "för att workshops fram", "genom att brainstorma kring", "för att kollaborera fram"
+                    "för att workshoppa fram", "genom att brainstorma kring", "för att kollaborera fram"
                 ],
                 vad: [
                     "en actionable agenda", "ett productive outcome", "konkreta next steps",
