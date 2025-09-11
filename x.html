@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svensk Floskelgenerator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        
+        .floskel-display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .floskel-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .generate-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .floskel-text {
+                font-size: 1.1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Floskelgenerator</h1>
+        <p class="subtitle">Generera professionella floskler för alla tillfällen</p>
+        
+        <div class="floskel-display">
+            <div class="floskel-text" id="floskelText">
+                Klicka på knappen för att generera en floskel!
+            </div>
+        </div>
+        
+        <button class="generate-btn" onclick="generateNewFloskel()">
+            Generera Floskel
+        </button>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="totalCombinations">0</div>
+                <div class="stat-label">Möjliga kombinationer</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="generatedCount">0</div>
+                <div class="stat-label">Genererade floskler</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            En generator för moderna arbetsplatser 💼<br>
+            by Aspis
+        </div>
+    </div>
+
+    <script>
+        // Data för olika ämnen
+        var flosklerData = {
+            allmant: {
+                inledning: [
+                    "Maximeras med", "Optimeras med", "Utvecklas med", "Brainstorma med",
+                    "Marinera frågan tillsammans med", "Vidareutvecklas med", "Bromsa och gasa samtidigt tillsammans med",
+                    "Ta pucken tillsammans med", "Starta från scratch med", "Accelerera processen med"
+                ],
+                vem: [
+                    "dig själv", "teamet", "dina kollegor", "dina kunder", "stakeholders",
+                    "projektgruppen", "våra partners", "cross-funktionella team", "ledningsgruppen", "användarbasen"
+                ],
+                hur: [
+                    "genom att pitcha", "för att pinpointa", "för att redan nu trimma kostnaderna och nå",
+                    "för att stärka konkurrenskraften för", "genom att deep-diva i", "för att pivota mot",
+                    "genom att streamlina processer för", "för att crowdsourca insikter kring"
+                ],
+                vad: [
+                    "ett agilt arbetssätt", "ett kostnadseffektivt flöde", "ett uppnående av satta mål",
+                    "ett adekvat mervärde", "ett maximerat ROI", "ett win-win-läge", "en skalbar affärsmodell",
+                    "en data-driven beslutsprocess", "en digital transformation", "en end-to-end-lösning"
+                ],
+                slutklam: [
+                    "som verkligen levererar resultat.", "med fokus på hållbar tillväxt.", "för framtidens arbetsplats.",
+                    "som skapar riktigt wow-effekt.", "med tydlig bottom line-impact.", "som revolutionerar branschen."
+                ]
+            },
+            ekonomi: {
+                inledning: [
+                    "Kostnadsoptimera med", "Budget-aligna med", "ROI-maximera genom", "Finansoptimera tillsammans med",
+                    "Profit-boosta med", "Cost-reducera genom", "Revenue-accelerera med", "Investera strategiskt med"
+                ],
+                vem: [
+                    "CFO:n", "ekonomiteamet", "budget-ownern", "finansavdelningen", "controllern",
+                    "cost-center managern", "procurement-teamet", "business controllern"
+                ],
+                hur: [
+                    "genom att cost-cutt:a för", "för att budget-planera mot", "genom att forecasta fram",
+                    "för att streamlina spend:en för", "genom att rightsiza:a för", "för att capitalize på"
+                ],
+                vad: [
+                    "en cost-effective roadmap", "ett streamlinat spend-management", "en profitabilitetsstrategi",
+                    "ett budget-optimerat framework", "en finansiell excellence-modell", "ett ROI-driven mindset"
+                ],
+                slutklam: [
+                    "med measurable business impact.", "som driver bottom line-resultat.", "för sustainable profitability.",
+                    "med clear cost-benefit ratio.", "som maximerar shareholder value.", "för financial excellence."
+                ]
+            },
+            ledarskap: {
+                inledning: [
+                    "Empowera teamet genom", "Vishionera tillsammans med", "Coacha medarbetarna för", "Inspirera organisationen med",
+                    "Transformera kulturen genom", "Facilitera förändring med", "Utveckla talanger genom", "Motivera individer med"
+                ],
+                vem: [
+                    "ditt leadership team", "direktrapporterna", "key talents", "high-potentials", "team leads",
+                    "change agents", "culture carriers", "senior managern", "middle managern"
+                ],
+                hur: [
+                    "genom att enablea för", "för att coaching:a fram", "genom att mentora mot",
+                    "för att utveckla förmågan att", "genom att empowera för", "för att inspirera till"
+                ],
+                vad: [
+                    "ett inspirerande ledarskap", "en change management-process", "ett high-performance team",
+                    "en utvecklande kultur", "ett engaging ledarskap", "en transformativ vision"
+                ],
+                slutklam: [
+                    "som skapar engaged medarbetare.", "för authentic leadership.", "med sustainable change.",
+                    "som bygger winning teams.", "för organizational excellence.", "med lasting transformation."
+                ]
+            },
+            moten: {
+                inledning: [
+                    "Facilitera sessionen med", "Moderera diskussionen genom", "Workshoppa fram", "Brainstorma tillsammans med",
+                    "Strukturera mötet genom", "Diskutera iterativt med", "Kollaborera effektivt med", "Facilitera dialog med"
+                ],
+                vem: [
+                    "mötesdeltagarna", "workshopgruppen", "stakeholder-gruppen", "projektteamet",
+                    "working group:en", "steering committee:n", "cross-funktionella teamet"
+                ],
+                hur: [
+                    "genom att strukturera agendan för", "för att facilitera diskussion kring", "genom att moderera fram",
+                    "för att workshops fram", "genom att brainstorma kring", "för att kollaborera fram"
+                ],
+                vad: [
+                    "en actionable agenda", "ett productive outcome", "konkreta next steps",
+                    "en strukturerad diskussion", "ett collaborative mindset", "en effektiv workshop-format"
+                ],
+                slutklam: [
+                    "med clear deliverables.", "som driver action items.", "för concrete outcomes.",
+                    "med actionable insights.", "som skapar momentum.", "för productive collaboration."
+                ]
+            },
+            hr: {
+                inledning: [
+                    "Utveckla medarbetarna genom", "Rekrytera talanger med", "Retainera key players genom", "Onboard:a nyanställda med",
+                    "Performance-managea med", "Utveckla kompetens genom", "Engage:a teamet med", "Talent-managea med"
+                ],
+                vem: [
+                    "HR-partnern", "line managern", "talent acquisition-teamet", "learning & development",
+                    "people managern", "HR business partnern", "kompetensrådet"
+                ],
+                hur: [
+                    "genom att recrui:a för", "för att onboard:a mot", "genom att desenvolva för",
+                    "för att retainera genom", "genom att performance-managea för", "för att engage:a kring"
+                ],
+                vad: [
+                    "en talent acquisition-strategi", "ett employee engagement-program", "en performance management-process",
+                    "ett learning & development-framework", "en retention-strategi", "ett onboarding-program"
+                ],
+                slutklam: [
+                    "för engaged medarbetare.", "med strong retention.", "som utvecklar talanger.",
+                    "för high performance culture.", "med sustainable growth.", "som attraherar top talent."
+                ]
+            },
+            it: {
+                inledning: [
+                    "Digitalisera processen med", "Automatisera workflow:et genom", "Cloudifiera infrastrukturen med", "Optimize:a systemet genom",
+                    "Integrera plattformen med", "Skalera arkitekturen genom", "Modernisera tech stack:en med", "Implementera lösningen med"
+                ],
+                vem: [
+                    "IT-avdelningen", "tech-teamet", "utvecklarna", "system-administratörerna",
+                    "cloud-arkitekten", "DevOps-teamet", "cyber security-teamet", "data-teamet"
+                ],
+                hur: [
+                    "genom att deploy:a för", "för att integrate:a mot", "genom att optimize:a för",
+                    "för att automate:a", "genom att cloudify:a för", "för att scale:a upp"
+                ],
+                vad: [
+                    "en cloud-first strategi", "ett scalable IT-framework", "en digital transformation",
+                    "ett automated workflow", "en modern tech-stack", "en secure IT-infrastruktur"
+                ],
+                slutklam: [
+                    "med cutting-edge teknologi.", "för future-proof arkitektur.", "som enabler innovation.",
+                    "med seamless integration.", "för optimal performance.", "som driver digital excellence."
+                ]
+            }
+        };
+
+        var generatedCount = 0;
+
+        function getRandomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function getSelectedTopics() {
+            var topics = [];
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    topics.push(checkbox.id);
+                }
+            });
+            
+            return topics.length > 0 ? topics : ['allmant'];
+        }
+
+        function combineArraysFromTopics(topics, category) {
+            var combined = [];
+            topics.forEach(function(topic) {
+                if (flosklerData[topic] && flosklerData[topic][category]) {
+                    combined = combined.concat(flosklerData[topic][category]);
+                }
+            });
+            return combined;
+        }
+
+        function generateNewFloskel() {
+            var selectedTopics = getSelectedTopics();
+            
+            var inledningArray = combineArraysFromTopics(selectedTopics, 'inledning');
+            var vemArray = combineArraysFromTopics(selectedTopics, 'vem');
+            var hurArray = combineArraysFromTopics(selectedTopics, 'hur');
+            var vadArray = combineArraysFromTopics(selectedTopics, 'vad');
+            var slutklamArray = combineArraysFromTopics(selectedTopics, 'slutklam');
+
+            var i = getRandomFromArray(inledningArray);
+            var v = getRandomFromArray(vemArray);
+            var h = getRandomFromArray(hurArray);
+            var va = getRandomFromArray(vadArray);
+            var s = getRandomFromArray(slutklamArray);
+
+            var floskel = i + " " + v + " " + h + " " + va + " " + s;
+            
+            document.getElementById('floskelText').innerHTML = floskel;
+            
+            generatedCount++;
+            document.getElementById('generatedCount').innerHTML = generatedCount;
+        }
+
+        function calculateCombinations() {
+            var selectedTopics = getSelectedTopics();
+            
+            var inledningCount = combineArraysFromTopics(selectedTopics, 'inledning').length;
+            var vemCount = combineArraysFromTopics(selectedTopics, 'vem').length;
+            var hurCount = combineArraysFromTopics(selectedTopics, 'hur').length;
+            var vadCount = combineArraysFromTopics(selectedTopics, 'vad').length;
+            var slutklamCount = combineArraysFromTopics(selectedTopics, 'slutklam').length;
+            
+            var total = inledningCount * vemCount * hurCount * vadCount * slutklamCount;
+            document.getElementById('totalCombinations').innerHTML = total.toLocaleString('sv-SE');
+        }
+
+        function selectAll() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = true;
+            });
+            calculateCombinations();
+        }
+
+        function clearAll() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+            // Sätt tillbaka allmänt som default
+            document.getElementById('allmant').checked = true;
+            calculateCombinations();
+        }
+
+        // Event listeners för checkboxar
+        function addCheckboxListeners() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', calculateCombinations);
+            });
+        }
+
+        // Kör när sidan laddas
+        window.onload = function() {
+            addCheckboxListeners();
+            calculateCombinations();
+            generateNewFloskel();
+        };
+
+        // Tangentbordsgenväg - mellanslag
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                event.preventDefault();
+                generateNewFloskel();
+            }
+        });
+    </script>
+</body>
+</html>
