@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svensk Floskelgenerator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        
+        .floskel-display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .floskel-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .generate-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .floskel-text {
+                font-size: 1.1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Floskelgenerator</h1>
+        <p class="subtitle">Generera professionella floskler för alla tillfällen</p>
+        
+        <div class="floskel-display">
+            <div class="floskel-text" id="floskelText">
+                Klicka på knappen för att generera en floskel!
+            </div>
+        </div>
+        
+        <button class="generate-btn" onclick="generateNewFloskel()">
+            Generera Floskel
+        </button>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="totalCombinations">0</div>
+                <div class="stat-label">Möjliga kombinationer</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="generatedCount">0</div>
+                <div class="stat-label">Genererade floskler</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            En generator för moderna arbetsplatser 💼<br>
+            by Aspis
+        </div>
+    </div>
+
+    <script>
+        // Data för floskelgeneratorn
+   var inledning = [
+    "Maximeras med",
+    "Optimeras med", 
+    "Utvecklas med",
+    "Brainstorma med",
+    "Marinera frågan tillsammans med",
+    "Vidareutvecklas med",
+    "Bromsa och gasa samtidigt tillsammans med",
+    "Ta pucken tillsammans med",
+    "Starta från scratch med",
+    "Accelerera processen med",
+    "Benchmarka tillsammans med",
+    "Disruptera branschen tillsammans med",
+    "Tänka utanför boxen med",
+    "Lyfta blicken med",
+    "Skala upp synergierna tillsammans med",
+    "Facilitera resan med",
+    "Trycka på den stora röda knappen tillsammans med",
+    "Visualisera framgångsresan med",
+    "Kickstarta kvartalet med",
+    "Öppna dörren för innovation tillsammans med"
+];
+
+var vem = [
+    "dig själv",
+    "teamet",
+    "dina kollegor", 
+    "dina kunder",
+    "stakeholders",
+    "projektgruppen",
+    "våra partners",
+    "cross-funktionella team",
+    "ledningsgruppen",
+    "användarbasen",
+    "externa konsulter",
+    "innovation-hubben",
+    "alla som råkade fastna i mötet",
+    "PowerPoint-maffian",
+    "Excel-arkitekterna",
+    "den spontana arbetsgruppen på Slack",
+    "LinkedIn-influencers",
+    "fredagsfikat",
+    "den nya arbetsgruppen som aldrig får ett slutdatum"
+];
+
+var hur = [
+    "genom att pitcha",
+    "för att pinpointa",
+    "för att redan nu trimma kostnaderna och nå",
+    "för att stärka konkurrenskraften för", 
+    "genom att deep-diva i",
+    "för att pivota mot",
+    "genom att streamlina processer för",
+    "för att crowdsourca insikter kring",
+    "genom att customiza lösningen för",
+    "genom att aligna visionen kring",
+    "för att leverera quick wins på",
+    "genom att skapa buy-in till",
+    "för att parkera frågan och återkomma till",
+    "genom att överimplementera i",
+    "genom att whiteboarda lösningar kring",
+    "för att agilifiera diskussionen om"
+];
+
+var vad = [
+    "ett agilt arbetssätt",
+    "ett kostnadseffektivt flöde",
+    "ett uppnående av satta mål",
+    "ett adekvat mervärde",
+    "ett maximerat ROI",
+    "ett win-win-läge",
+    "en skalbar affärsmodell",
+    "en data-driven beslutsprocess",
+    "en digital transformation",
+    "en end-to-end-lösning",
+    "en synergieffekt utan dess like",
+    "ett paradigmskifte",
+    "en KPI-driven kultur",
+    "ett next level-case",
+    "en powerpoint som känns som TED-talk",
+    "ett arbetsflöde där alla känner sig 'ägare'",
+    "en lösning som känns enkel men är omöjlig att förklara"
+];
+
+var slutklam = [
+    "som verkligen levererar resultat.",
+    "med fokus på hållbar tillväxt.",
+    "för framtidens arbetsplats.",
+    "som skapar riktigt wow-effekt.",
+    "med tydlig bottom line-impact.",
+    "som revolutionerar branschen.",
+    "med genuine business impact.",
+    "som sätter ribban högt.",
+    "med cutting edge-innovation.",
+    "som enabler success.",
+    "som alla kan ta med sig hem till fredagsfikat.",
+    "utan att behöva fler möten i onödan.",
+    "som känns bra i magen men ännu bättre i Excel.",
+    "så vi kan kalla det en resa och inte ett projekt.",
+    "som ger illusionen av kontroll.",
+    "utan att någon egentligen vet vad vi menar.",
+    "som skapar trygghet i powerpoints men kaos i verkligheten."
+];
+
+
+        var generatedCount = 0;
+
+        function getRandomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function generateNewFloskel() {
+            var i = getRandomFromArray(inledning);
+            var v = getRandomFromArray(vem);
+            var h = getRandomFromArray(hur);
+            var va = getRandomFromArray(vad);
+            var s = getRandomFromArray(slutklam);
+
+            var floskel = i + " " + v + " " + h + " " + va + " " + s;
+            
+            document.getElementById('floskelText').innerHTML = floskel;
+            
+            generatedCount++;
+            document.getElementById('generatedCount').innerHTML = generatedCount;
+        }
+
+        function calculateCombinations() {
+            var total = inledning.length * vem.length * hur.length * vad.length * slutklam.length;
+            document.getElementById('totalCombinations').innerHTML = total.toLocaleString('sv-SE');
+        }
+
+        // Kör när sidan laddas
+        window.onload = function() {
+            calculateCombinations();
+            generateNewFloskel();
+        };
+
+        // Tangentbordsgenväg - mellanslag
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                event.preventDefault();
+                generateNewFloskel();
+            }
+        });
+    </script>
+</body>
+</html>
