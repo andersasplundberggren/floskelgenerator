@@ -181,73 +181,110 @@
 
     <script>
         // Data för floskelgeneratorn
-        var inledning = [
-            "Maximeras med",
-            "Optimeras med", 
-            "Utvecklas med",
-            "Brainstorma med",
-            "Marinera frågan tillsammans med",
-            "Vidareutvecklas med",
-            "Bromsa och gasa samtidigt tillsammans med",
-            "Ta pucken tillsammans med",
-            "Starta från scratch med",
-            "Accelerera processen med",
-            "Benchmarka tillsammans med",
-            "Disruptera branschen tillsammans med"
-        ];
+   var inledning = [
+    "Maximeras med",
+    "Optimeras med", 
+    "Utvecklas med",
+    "Brainstorma med",
+    "Marinera frågan tillsammans med",
+    "Vidareutvecklas med",
+    "Bromsa och gasa samtidigt tillsammans med",
+    "Ta pucken tillsammans med",
+    "Starta från scratch med",
+    "Accelerera processen med",
+    "Benchmarka tillsammans med",
+    "Disruptera branschen tillsammans med",
+    "Tänka utanför boxen med",
+    "Lyfta blicken med",
+    "Skala upp synergierna tillsammans med",
+    "Facilitera resan med",
+    "Trycka på den stora röda knappen tillsammans med",
+    "Visualisera framgångsresan med",
+    "Kickstarta kvartalet med",
+    "Öppna dörren för innovation tillsammans med"
+];
 
-        var vem = [
-            "dig själv",
-            "teamet",
-            "dina kollegor", 
-            "dina kunder",
-            "stakeholders",
-            "projektgruppen",
-            "våra partners",
-            "cross-funktionella team",
-            "ledningsgruppen",
-            "användarbasen",
-            "externa konsulter",
-            "innovation-hubben"
-        ];
+var vem = [
+    "dig själv",
+    "teamet",
+    "dina kollegor", 
+    "dina kunder",
+    "stakeholders",
+    "projektgruppen",
+    "våra partners",
+    "cross-funktionella team",
+    "ledningsgruppen",
+    "användarbasen",
+    "externa konsulter",
+    "innovation-hubben",
+    "alla som råkade fastna i mötet",
+    "PowerPoint-maffian",
+    "Excel-arkitekterna",
+    "den spontana arbetsgruppen på Slack",
+    "LinkedIn-influencers",
+    "fredagsfikat",
+    "den nya arbetsgruppen som aldrig får ett slutdatum"
+];
 
-        var hur = [
-            "genom att pitcha",
-            "för att pinpointa",
-            "för att redan nu trimma kostnaderna och nå",
-            "för att stärka konkurrenskraften för", 
-            "genom att deep-diva i",
-            "för att pivota mot",
-            "genom att streamlina processer för",
-            "för att crowdsourca insikter kring",
-            "genom att customiza lösningen för"
-        ];
+var hur = [
+    "genom att pitcha",
+    "för att pinpointa",
+    "för att redan nu trimma kostnaderna och nå",
+    "för att stärka konkurrenskraften för", 
+    "genom att deep-diva i",
+    "för att pivota mot",
+    "genom att streamlina processer för",
+    "för att crowdsourca insikter kring",
+    "genom att customiza lösningen för",
+    "genom att aligna visionen kring",
+    "för att leverera quick wins på",
+    "genom att skapa buy-in till",
+    "för att parkera frågan och återkomma till",
+    "genom att överimplementera i",
+    "genom att whiteboarda lösningar kring",
+    "för att agilifiera diskussionen om"
+];
 
-        var vad = [
-            "ett agilt arbetssätt",
-            "ett kostnadseffektivt flöde",
-            "ett uppnående av satta mål",
-            "ett adekvat mervärde",
-            "ett maximerat ROI",
-            "ett win-win-läge",
-            "en skalbar affärsmodell",
-            "en data-driven beslutsprocess",
-            "en digital transformation",
-            "en end-to-end-lösning"
-        ];
+var vad = [
+    "ett agilt arbetssätt",
+    "ett kostnadseffektivt flöde",
+    "ett uppnående av satta mål",
+    "ett adekvat mervärde",
+    "ett maximerat ROI",
+    "ett win-win-läge",
+    "en skalbar affärsmodell",
+    "en data-driven beslutsprocess",
+    "en digital transformation",
+    "en end-to-end-lösning",
+    "en synergieffekt utan dess like",
+    "ett paradigmskifte",
+    "en KPI-driven kultur",
+    "ett next level-case",
+    "en powerpoint som känns som TED-talk",
+    "ett arbetsflöde där alla känner sig 'ägare'",
+    "en lösning som känns enkel men är omöjlig att förklara"
+];
 
-        var slutklam = [
-            "som verkligen levererar resultat.",
-            "med fokus på hållbar tillväxt.",
-            "för framtidens arbetsplats.",
-            "som skapar riktigt wow-effekt.",
-            "med tydlig bottom line-impact.",
-            "som revolutionerar branschen.",
-            "med genuine business impact.",
-            "som sätter ribban högt.",
-            "med cutting edge-innovation.",
-            "som enabler success."
-        ];
+var slutklam = [
+    "som verkligen levererar resultat.",
+    "med fokus på hållbar tillväxt.",
+    "för framtidens arbetsplats.",
+    "som skapar riktigt wow-effekt.",
+    "med tydlig bottom line-impact.",
+    "som revolutionerar branschen.",
+    "med genuine business impact.",
+    "som sätter ribban högt.",
+    "med cutting edge-innovation.",
+    "som enabler success.",
+    "som alla kan ta med sig hem till fredagsfikat.",
+    "utan att behöva fler möten i onödan.",
+    "som känns bra i magen men ännu bättre i Excel.",
+    "så vi kan kalla det en resa och inte ett projekt.",
+    "som ger illusionen av kontroll.",
+    "utan att någon egentligen vet vad vi menar.",
+    "som skapar trygghet i powerpoints men kaos i verkligheten."
+];
+
 
         var generatedCount = 0;
 
