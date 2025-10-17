@@ -146,7 +146,36 @@
             border-top: 1px solid rgba(46, 139, 87, 0.2);
         }
         
-        .category-hint {
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .mode-btn {
+            padding: 12px 24px;
+            border: 2px solid #2E8B57;
+            background: white;
+            color: #2E8B57;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+        
+        .mode-btn:hover {
+            background: rgba(46, 139, 87, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .mode-btn.active {
+            background: #2E8B57;
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
+        }
             text-align: center;
             margin-bottom: 15px;
             color: #2E8B57;
@@ -185,7 +214,16 @@
 <body>
     <div class="container">
         <h1>🏛️ Strategisk Samhällsplanering</h1>
-        <p class="subtitle">Generera professionella floskler för modern samhällsutveckling</p>
+        <p class="subtitle">Generera professionella floskler och skryttexter för modern samhällsutveckling</p>
+        
+        <div class="mode-selector">
+            <button class="mode-btn active" id="floskelBtn" onclick="setMode('floskel')">
+                📋 Floskler
+            </button>
+            <button class="mode-btn" id="skrytBtn" onclick="setMode('skryt')">
+                🏆 Skryttexter
+            </button>
+        </div>
         
         <div class="category-hint" id="categoryHint">Strategisk utveckling</div>
         
@@ -195,8 +233,8 @@
             </div>
         </div>
         
-        <button class="generate-btn" onclick="generateNewFloskel()">
-            Generera Floskel
+        <button class="generate-btn" onclick="generateNewText()">
+            <span id="generateBtnText">Generera Floskel</span>
         </button>
         
         <div class="stats">
@@ -221,7 +259,10 @@
     </div>
 
     <script>
-        // Data för samhällsplaneringsgeneratorn
+        // Nuvarande läge
+        var currentMode = 'floskel';
+
+        // Data för samhällsplaneringsgeneratorn (FLOSKLER)
         var inledning = [
             "Utveckla",
             "Implementera",
@@ -318,6 +359,71 @@
             "med helhetssyn på utmaningarna."
         ];
 
+        // Data för SKRYTTEXTER
+        var skrytInledning = [
+            "Vi är stolta över att vara",
+            "Som en av Sveriges ledande kommuner inom",
+            "Vi har framgångsrikt etablerat oss som",
+            "Genom vårt banbrytande arbete är vi nu",
+            "Vi har med stolthet blivit",
+            "Som pionjärer inom",
+            "Vi är erkänt excellenta inom",
+            "Tack vare vår innovativa ansats är vi",
+            "Vi har erhållit nationell erkännelse som",
+            "Som föregångare inom",
+            "Vi har positionerat oss som",
+            "Genom visionärt ledarskap är vi nu"
+        ];
+
+        var skrytOmråde = [
+            "hållbar stadsutveckling",
+            "klimatsmarta lösningar",
+            "digital transformation",
+            "medborgardeltagande",
+            "innovativ infrastruktur",
+            "grön omställning",
+            "social innovation",
+            "kulturell utveckling",
+            "näringslivsutveckling",
+            "kollektivtrafiklösningar",
+            "energieffektivisering",
+            "cirkulär ekonomi",
+            "demokratiska processer",
+            "inkluderande planering",
+            "livskvalitetshöjande åtgärder",
+            "framtidsorienterad styrning"
+        ];
+
+        var skrytResultat = [
+            "och har därmed blivit en nationell förebild",
+            "vilket resulterat i betydande samhällsnytta",
+            "med erkännande från branschledande experter",
+            "som lett till flera prestigefyllda utmärkelser",
+            "vilket genererat inspiration för andra kommuner",
+            "med dokumenterat positiva effekter för invånarna",
+            "som resulterat i ökad livskvalitet för alla",
+            "vilket stärkt vår position som kunskapskommun",
+            "med mätbara förbättringar av nyckeltal",
+            "som lett till internationell uppmärksamhet",
+            "vilket bidragit till regionens utvecklingskraft",
+            "med tydliga positiva effekter på lång sikt"
+        ];
+
+        var skrytAvslut = [
+            "för framtida generationer.",
+            "som grund för fortsatt framgång.",
+            "med fokus på hållbar utveckling.",
+            "för en tryggare och bättre framtid.",
+            "som bevis på vårt engagemang.",
+            "med sikte på ännu större framsteg.",
+            "för samhällets bästa.",
+            "som inspiration för andra.",
+            "med stolthet och tillförsikt.",
+            "för en rättvis och inkluderande utveckling.",
+            "som bas för kommande utmaningar.",
+            "med fokus på livskvalitet och välstånd."
+        ];
+
         var categories = [
             "Strategisk utveckling",
             "Klimatanpassning", 
@@ -333,6 +439,29 @@
 
         function getRandomFromArray(arr) {
             return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Uppdatera knapparnas utseende
+            document.getElementById('floskelBtn').classList.toggle('active', mode === 'floskel');
+            document.getElementById('skrytBtn').classList.toggle('active', mode === 'skryt');
+            
+            // Uppdatera knapptext
+            var btnText = mode === 'floskel' ? 'Generera Floskel' : 'Generera Skryttext';
+            document.getElementById('generateBtnText').innerHTML = btnText;
+            
+            // Generera ny text för det valda läget
+            generateNewText();
+        }
+
+        function generateNewText() {
+            if (currentMode === 'floskel') {
+                generateNewFloskel();
+            } else {
+                generateNewSkryttext();
+            }
         }
 
         function generateNewFloskel() {
@@ -353,22 +482,41 @@
             document.getElementById('generatedCount').innerHTML = generatedCount;
         }
 
+        function generateNewSkryttext() {
+            var i = getRandomFromArray(skrytInledning);
+            var o = getRandomFromArray(skrytOmråde);
+            var r = getRandomFromArray(skrytResultat);
+            var a = getRandomFromArray(skrytAvslut);
+            var cat = getRandomFromArray(categories);
+
+            var skryttext = i + " " + o + " " + r + " " + a;
+            
+            document.getElementById('floskelText').innerHTML = skryttext;
+            document.getElementById('categoryHint').innerHTML = cat;
+            document.getElementById('currentCategory').innerHTML = cat;
+            
+            generatedCount++;
+            document.getElementById('generatedCount').innerHTML = generatedCount;
+        }
+
         function calculateCombinations() {
-            var total = inledning.length * vad.length * hur.length * syfte.length * slutklam.length;
+            var floskelTotal = inledning.length * vad.length * hur.length * syfte.length * slutklam.length;
+            var skrytTotal = skrytInledning.length * skrytOmråde.length * skrytResultat.length * skrytAvslut.length;
+            var total = floskelTotal + skrytTotal;
             document.getElementById('totalCombinations').innerHTML = total.toLocaleString('sv-SE');
         }
 
         // Kör när sidan laddas
         window.onload = function() {
             calculateCombinations();
-            generateNewFloskel();
+            generateNewText();
         };
 
         // Tangentbordsgenväg - mellanslag
         document.addEventListener('keydown', function(event) {
             if (event.code === 'Space' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
                 event.preventDefault();
-                generateNewFloskel();
+                generateNewText();
             }
         });
 
@@ -376,7 +524,18 @@
         document.addEventListener('keydown', function(event) {
             if (event.code === 'Enter' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
                 event.preventDefault();
-                generateNewFloskel();
+                generateNewText();
+            }
+        });
+
+        // Nummerblock för att växla läge
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Digit1' || event.code === 'Numpad1') {
+                event.preventDefault();
+                setMode('floskel');
+            } else if (event.code === 'Digit2' || event.code === 'Numpad2') {
+                event.preventDefault();
+                setMode('skryt');
             }
         });
     </script>
