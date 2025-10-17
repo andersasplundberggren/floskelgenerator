@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategisk Samhällsplanering - Floskelgenerator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #228B22 50%, #006400 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(46, 139, 87, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #2E8B57, #228B22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        
+        .floskel-display {
+            background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 100%);
+            border-radius: 15px;
+            padding: 35px;
+            margin: 30px 0;
+            border-left: 5px solid #2E8B57;
+            box-shadow: 0 8px 20px rgba(46, 139, 87, 0.1);
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .floskel-display::before {
+            content: "🏛️";
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+        
+        .floskel-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #2d4a3a;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .generate-btn {
+            display: block;
+            width: 220px;
+            margin: 0 auto;
+            padding: 16px 32px;
+            background: linear-gradient(45deg, #2E8B57, #228B22);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 18px rgba(46, 139, 87, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(46, 139, 87, 0.4);
+            background: linear-gradient(45deg, #228B22, #006400);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 35px;
+            background: rgba(46, 139, 87, 0.08);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(46, 139, 87, 0.2);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2E8B57;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(46, 139, 87, 0.2);
+        }
+        
+        .category-hint {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #2E8B57;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .floskel-text {
+                font-size: 1.1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .generate-btn {
+                width: 200px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ Strategisk Samhällsplanering</h1>
+        <p class="subtitle">Generera professionella floskler för modern samhällsutveckling</p>
+        
+        <div class="category-hint" id="categoryHint">Strategisk utveckling</div>
+        
+        <div class="floskel-display">
+            <div class="floskel-text" id="floskelText">
+                Klicka på knappen för att generera en strategisk floskel!
+            </div>
+        </div>
+        
+        <button class="generate-btn" onclick="generateNewFloskel()">
+            Generera Floskel
+        </button>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="totalCombinations">0</div>
+                <div class="stat-label">Möjliga kombinationer</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="generatedCount">0</div>
+                <div class="stat-label">Genererade strategier</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="currentCategory">-</div>
+                <div class="stat-label">Aktuell kategori</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            För en hållbar och inkluderande framtid 🌱<br>
+            <em>Strategisk samhällsplanering med fokus på medborgarperspektiv</em>
+        </div>
+    </div>
+
+    <script>
+        // Data för samhällsplaneringsgeneratorn
+        var inledning = [
+            "Utveckla",
+            "Implementera",
+            "Stärka",
+            "Etablera", 
+            "Skapa förutsättningar för",
+            "Säkerställa",
+            "Främja",
+            "Understödja",
+            "Vidareutveckla",
+            "Prioritera",
+            "Koordinera",
+            "Facilitera",
+            "Initiera",
+            "Förstärka",
+            "Tillvarata",
+            "Optimera",
+            "Balansera"
+        ];
+
+        var vad = [
+            "en hållbar stadsutveckling",
+            "klimatanpassade lösningar",
+            "resilient infrastruktur",
+            "inkluderande bostadspolitik",
+            "integrerade transportsystem",
+            "cirkulär ekonomi",
+            "grön omställning",
+            "digital transformation",
+            "socialt hållbar utveckling",
+            "tätortsnära naturområden",
+            "kollektivtrafikens attraktivitet",
+            "energieffektiva lösningar",
+            "flerfunktionella offentliga rum",
+            "näringslivets utvecklingskraft",
+            "kulturell mångfald",
+            "demokratiska processer",
+            "regionala samarbeten"
+        ];
+
+        var hur = [
+            "genom strategiska partnerskap",
+            "via tvärvetenskapliga ansatser",
+            "med medborgarcentrerade processer",
+            "genom evidensbaserade metoder",
+            "via konsekvensbedömningar",
+            "med utgångspunkt i FN:s globala mål",
+            "genom adaptiva styrningsmodeller",
+            "via samhällsekonomiska analyser",
+            "med fokus på generationsperspektiv",
+            "genom intersektoriella samarbeten",
+            "via deltagande planering",
+            "med systemteoretiska utgångspunkter",
+            "genom riskbaserade bedömningar",
+            "via kompetensförsörjningsstrategier",
+            "med life cycle-perspektiv",
+            "genom datadriven uppföljning"
+        ];
+
+        var syfte = [
+            "för att stärka samhällskontrakt",
+            "som bidrar till välfärd för alla",
+            "för ökad livskvalitet",
+            "som säkerställer framtidsberedskap",
+            "för resilient samhällsbyggnad",
+            "som främjar social sammanhållning",
+            "för ekosystemens långsiktiga hälsa",
+            "som understödjer demokratisk utveckling",
+            "för rättvis resursfördelning",
+            "som stärker konkurrenskraft",
+            "för trygg och säker miljö",
+            "som möjliggör innovation",
+            "för klimatneutral utveckling",
+            "som värnar kulturarv",
+            "för inkluderande ekonomisk tillväxt",
+            "som bygger tillit mellan aktörer"
+        ];
+
+        var slutklam = [
+            "med långsiktig effekt.",
+            "för kommande generationer.",
+            "i ett systemperspektiv.",
+            "som grund för hållbar framtid.",
+            "med mätbara resultat.",
+            "genom kontinuerlig utvärdering.",
+            "för en rättvis samhällsutveckling.",
+            "med fokus på livskvalitet.",
+            "som styrande princip framöver.",
+            "för samhällets bästa.",
+            "med bred politisk förankring.",
+            "som grund för framtida beslut.",
+            "genom iterativa förbättringar.",
+            "för stärkt demokratisk legitimitet.",
+            "med helhetssyn på utmaningarna."
+        ];
+
+        var categories = [
+            "Strategisk utveckling",
+            "Klimatanpassning", 
+            "Infrastruktur",
+            "Bostadspolitik",
+            "Transportplanering",
+            "Miljö & hållbarhet",
+            "Digital transformation",
+            "Social utveckling"
+        ];
+
+        var generatedCount = 0;
+
+        function getRandomFromArray(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function generateNewFloskel() {
+            var i = getRandomFromArray(inledning);
+            var va = getRandomFromArray(vad);
+            var h = getRandomFromArray(hur);
+            var s = getRandomFromArray(syfte);
+            var sl = getRandomFromArray(slutklam);
+            var cat = getRandomFromArray(categories);
+
+            var floskel = i + " " + va + " " + h + " " + s + " " + sl;
+            
+            document.getElementById('floskelText').innerHTML = floskel;
+            document.getElementById('categoryHint').innerHTML = cat;
+            document.getElementById('currentCategory').innerHTML = cat;
+            
+            generatedCount++;
+            document.getElementById('generatedCount').innerHTML = generatedCount;
+        }
+
+        function calculateCombinations() {
+            var total = inledning.length * vad.length * hur.length * syfte.length * slutklam.length;
+            document.getElementById('totalCombinations').innerHTML = total.toLocaleString('sv-SE');
+        }
+
+        // Kör när sidan laddas
+        window.onload = function() {
+            calculateCombinations();
+            generateNewFloskel();
+        };
+
+        // Tangentbordsgenväg - mellanslag
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                event.preventDefault();
+                generateNewFloskel();
+            }
+        });
+
+        // Enter-tangent som alternativ
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Enter' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                event.preventDefault();
+                generateNewFloskel();
+            }
+        });
+    </script>
+</body>
+</html>
